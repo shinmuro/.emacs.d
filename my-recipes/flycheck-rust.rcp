@@ -1,0 +1,7 @@
+(:name flycheck-rust
+       :description "Better Rust/Cargo support for Flycheck"
+       :type github
+       :pkgname "flycheck/flycheck-rust"
+       :depends (flycheck rust-mode)
+       :prepare (eval-after-load 'rust-mode
+                  '(add-hook 'flycheck-mode-hook #'flycheck-rust-setup)))
