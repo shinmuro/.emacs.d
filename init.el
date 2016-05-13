@@ -163,11 +163,20 @@
 ;; cider 設定
 ; eldoc は nREPL 接続後に有効になる
 (setq eldoc-idle-delay 0)
-
 (add-hook 'cider-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'cider-mode-hook #'eldoc-mode) 
 (add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'cider-repl-mode-hook #'eldoc-mode) 
+
+;; データ用意するの面倒なんで家で確認
+(setq cider-repl-use-pretty-printing t)
+
+;; cider の play-clj で使う事を想定したその場しのぎの関数
+;; 評価結果がどの ns で行われてるのか不明だがとっかかりにはなるはず
+(defun play-clj-reload ()
+  (interactive)
+  (cider-interactive-eval "(+ 1 1)"))
+(define-key cider-mode-map (kbd "C-c j") 'play-clj-reload)
 
 ;;;
 ;;; rust 関連
