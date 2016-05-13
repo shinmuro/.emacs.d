@@ -162,11 +162,15 @@
 
 ;; cider 設定
 ; eldoc は nREPL 接続後に有効になる
+(require 'cider)
 (setq eldoc-idle-delay 0)
 (add-hook 'cider-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'cider-mode-hook #'eldoc-mode) 
 (add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'cider-repl-mode-hook #'eldoc-mode) 
+
+(add-hook 'cider-mode-hook 'enable-paredit-mode)
+(add-hook 'cider-repl-mode-hook #'enable-paredit-mode)
 
 ;; データ用意するの面倒なんで家で確認
 (setq cider-repl-use-pretty-printing t)
