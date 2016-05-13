@@ -172,15 +172,26 @@
 (add-hook 'cider-mode-hook 'enable-paredit-mode)
 (add-hook 'cider-repl-mode-hook #'enable-paredit-mode)
 
-;; データ用意するの面倒なんで家で確認
-(setq cider-repl-use-pretty-printing t)
+(setq cider-pprint-fn 'puget)           ; leiningen のプラグインとして事前に追加しておく事
 
-;; cider の play-clj で使う事を想定したその場しのぎの関数
-;; 評価結果がどの ns で行われてるのか不明だがとっかかりにはなるはず
 (defun play-clj-reload ()
+  "REPL へ play-clj への反映コマンドを投げる。
+   hello-world-game と mainscreen は適時書き換える事。"
   (interactive)
-  (cider-interactive-eval "(+ 1 1)"))
+  (cider-interactive-eval
+   "(on-gl (set-screen! pj-tests-game main-screen))"))
 (define-key cider-mode-map (kbd "C-c j") 'play-clj-reload)
+
+(defun save->eval->reload ()
+  "play-clj での開発用。バッファセーブ→バッファ評価→play-cljのリロードのコンボをまとめて実行する。
+   sit-for で wait かましているのはあんまり意味ないかも。"
+  (interactive)
+  (save-buffer)
+  (sit-for 1)
+  (cider-load-buffer)
+  (sit-for 1)
+  (play-clj-reload))
+(define-key cider-mode-map (kbd "<f5>") 'save->eval->reload)
 
 ;;;
 ;;; rust 関連
